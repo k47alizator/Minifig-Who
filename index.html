@@ -75,11 +75,20 @@
             align-items: center;
         }
 
-        .brickle-card:hover {
+        /* Hover dla karty STWÓRZ GRĘ (Żółty) */
+        .brickle-card.create-card:hover {
             transform: translateY(-5px) scale(1.02);
             border-color: var(--lego-yellow);
             box-shadow: 0 15px 35px rgba(255, 213, 0, 0.2), 0 0 15px rgba(255, 213, 0, 0.1);
         }
+
+        /* NOWOŚĆ: Hover dla karty DOŁĄCZ (Czerwony) */
+        .brickle-card.join-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--lego-red);
+            box-shadow: 0 15px 35px rgba(227, 0, 11, 0.2), 0 0 15px rgba(227, 0, 11, 0.1);
+        }
+
         .brickle-card:active {
             transform: translateY(1px) scale(0.98);
         }
@@ -256,6 +265,20 @@
             backdrop-filter: blur(10px);
         }
 
+        /* OBRAZEK UDOSTĘPNIANIA (ZAMIAST PRZYCISKU KOPIUJ) */
+        .share-icon-btn {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            vertical-align: middle;
+            margin-top: -5px;
+        }
+
+        .share-icon-btn:hover {
+            transform: scale(1.15);
+        }
+
         .discord-corner {
             position: absolute;
             top: 20px;
@@ -289,13 +312,13 @@
     
     <div id="setup-view">
         <div class="start-grid">
-            <div class="brickle-card" onclick="createGame()">
+            <div class="brickle-card create-card" onclick="createGame()">
                 <div class="icon-box icon-yellow"><i class="fa-solid fa-plus"></i></div>
                 <div class="card-title">Stwórz grę</div>
                 <div class="card-desc">Załóż nowy pokój i zaproś znajomego.</div>
             </div>
 
-            <div class="brickle-card" style="cursor: default;">
+            <div class="brickle-card join-card" style="cursor: default;">
                 <div class="icon-box icon-red"><i class="fa-solid fa-right-to-bracket"></i></div>
                 <div class="card-title">Dołącz</div>
                 <div class="card-desc">Wpisz kod i wejdź do wspólnej zabawy.</div>
@@ -309,11 +332,15 @@
     </div>
 
     <div id="lobby-view" style="display: none;">
-        <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; border: 2px solid #00ff00; display: inline-block; backdrop-filter: blur(10px);">
+        <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; border: 2px solid var(--lego-red); display: inline-block; backdrop-filter: blur(10px); position: relative;">
             <p style="margin: 0; color: #9CA3AF; font-weight: 600; font-size: 14px;">KOD POKOJU:</p>
-            <h2 id="display-code" style="margin: 5px 0; font-size: 45px; letter-spacing: 4px; color: white;">---</h2>
-            <button onclick="copyRoomLink()" class="cat-btn" style="padding: 6px 15px; font-size: 12px;">Skopiuj Link</button>
+            
+            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 5px 0;">
+                <h2 id="display-code" style="margin: 0; font-size: 45px; letter-spacing: 4px; color: white;">---</h2>
+                <img src="img/Share symbol.png" class="share-icon-btn" onclick="copyRoomLink()" title="Skopiuj link do pokoju" alt="Udostępnij">
+            </div>
         </div>
+        
         <h3 style="margin: 40px 0 20px; text-transform: uppercase; letter-spacing: 2px;">Wybierz kategorię:</h3>
         <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto;"></div>
     </div>
@@ -489,11 +516,10 @@
         ]
     };
 
-   const getFolderName = (catName) => {
+ const getFolderName = (catName) => {
         return catName.replace('LEGO ', '').toLowerCase().trim().replace(/\s+\/\s+/g, '-').replace(/\s+/g, '-');
     };
 
-    // GENEROWANIE 4 CYFR ZAMIAST "LEGO-XXXX"
     function createGame() {
         let code = "";
         for(let i=0; i<4; i++) {
