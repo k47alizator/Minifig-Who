@@ -28,7 +28,10 @@
             min-height: 100vh;
         }
 
-        #menu, #game-area { padding: 40px 20px; }
+        #menu, #game-area { 
+            padding: 40px 20px; 
+            position: relative; /* Zabezpieczenie dla pozycjonowania loga w rogu */
+        }
 
         h1.main-title {
             font-weight: 700;
@@ -195,11 +198,56 @@
             margin-bottom: 30px;
             backdrop-filter: blur(10px);
         }
+
+        /* STYL DLA LOGO DISCORDA W ROGU */
+        .discord-corner {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background: #5865F2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .discord-corner:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
+            border-color: white;
+        }
+
+        .discord-corner img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .discord-corner {
+                top: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div id="menu">
+    <div class="discord-corner" onclick="window.open('https://discord.gg/TUTAJ_WKLEJ_SWOJ_KOD', '_blank')" title="Dołącz do Discorda">
+        <img src="img/Discord.png" alt="Discord">
+    </div>
+
     <h1 class="main-title">Minifig <span>Who</span></h1>
     <p class="subtitle">Zgadnij postać przeciwnika</p>
     
@@ -484,7 +532,7 @@ const db = {
         }
 
         const selected = pool.slice(0, 24);
-        const target = selected[Math.floor(Math.random() * selected.length)];
+        const target = selected[Math.floor(rand() * selected.length)];
         document.getElementById('target-name').innerText = target.n;
 
         const grid = document.getElementById('character-grid');
