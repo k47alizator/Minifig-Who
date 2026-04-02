@@ -133,7 +133,8 @@
             text-transform: uppercase;
         }
 
-        #category-buttons .cat-btn, .wez-btn {
+        /* --- STYL LIQUID GLASS DLA PRZYCISKÓW --- */
+        #category-buttons .cat-btn, .action-btn {
             background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -147,7 +148,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        #category-buttons .cat-btn:hover, .wez-btn:hover {
+        #category-buttons .cat-btn:hover, .action-btn:hover {
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(227, 0, 11, 0.7);
             transform: translateY(-3px) scale(1.03);
@@ -157,7 +158,7 @@
                 inset 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        #category-buttons .cat-btn:active, .wez-btn:active {
+        #category-buttons .cat-btn:active, .action-btn:active {
             transform: translateY(1px) scale(0.98);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
@@ -258,27 +259,7 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        .discord-corner:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
-            border-color: white;
-        }
-
-        .discord-corner img {
-            width: 60%;
-            height: 60%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-
-        @media (max-width: 600px) {
-            .discord-corner {
-                top: 15px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-            }
-        }
+        .discord-corner img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -306,7 +287,7 @@
                 <input type="text" id="room-input" placeholder="np. LEGO-123" 
                        onclick="event.stopPropagation()" 
                        onkeypress="if(event.key === 'Enter') joinGame()">
-                <button class="wez-btn" style="margin-top: 15px; width: 85%; padding: 12px;" onclick="joinGame()">WEJDŹ</button>
+                <button class="action-btn" style="margin-top: 15px; width: 85%; padding: 12px; font-weight: 600; border-radius: 12px; cursor: pointer; text-transform: uppercase;" onclick="joinGame()">WEJDŹ</button>
             </div>
         </div>
     </div>
@@ -500,6 +481,7 @@ const db = {
         return catName.replace('LEGO ', '').toLowerCase().trim().replace(/\s+\/\s+/g, '-').replace(/\s+/g, '-');
     };
 
+    // POPRAWKA: Funkcja stworzenia pokoju teraz od razu przechodzi do lobby
     function createGame() {
         const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
         let randomPart = "";
@@ -507,9 +489,6 @@ const db = {
             randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         const code = "LEGO-" + randomPart;
-        
-        const input = document.getElementById('room-input');
-        if(input) input.value = code;
         enterLobby(code);
     }
 
@@ -560,7 +539,7 @@ const db = {
             pool = db[category].map(char => ({ ...char, folder: folder }));
         }
 
-        // 1. LOSOWANIE PLANSZY (Generator Mulberry oparty o Kod Pokoju)
+        // Generator oparty o kod pokoju dla układu klocków
         let seed = 0;
         for (let i = 0; i < roomCode.length; i++) seed = ((seed << 5) - seed) + roomCode.charCodeAt(i);
         
@@ -579,8 +558,7 @@ const db = {
 
         const selected = pool.slice(0, 24);
 
-        // 2. ZMIANA: LOSOWANIE POSTACI (Zwykłe Math.random() niezależne dla graczy!)
-        // Teraz losuje tylko spośród wybranej wcześniej 24-ki na planszy!
+        // Losowanie celu z wylosowanych postaci (całkowicie losowo!)
         const target = selected[Math.floor(Math.random() * selected.length)];
         document.getElementById('target-name').innerText = target.n;
 
@@ -626,7 +604,7 @@ const db = {
 
     window.onload = () => {
         const room = new URLSearchParams(window.location.search).get('room');
-        if (room) { document.getElementById('room-input').value = room.toUpperCase(); enterLobby(room); }
+        if (room) { enterLobby(room); }
     };
 </script>
 </body>
