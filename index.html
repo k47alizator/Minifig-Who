@@ -313,14 +313,13 @@
             cursor: pointer;
             transition: all 0.2s ease;
             vertical-align: middle;
-            /* NOWE: Robi ikonkę białą */
-            filter: invert(1) brightness(2);
+            /* USUNIĘTO: brightness i invert - teraz ikonka wyświetla się tak, jak ją zapisałeś w pliku */
         }
 
         .share-icon-btn:hover {
             transform: scale(1.15);
-            /* Lekkie podświetlenie na hoverze */
-            filter: invert(1) brightness(3);
+            /* Delikatne przygaszenie na hoverze dla lepszego efektu klikania */
+            opacity: 0.8;
         }
 
         .discord-corner {
