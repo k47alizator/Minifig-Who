@@ -212,7 +212,7 @@
             transform: translateY(-3px) scale(1.05);
             box-shadow: 
                 0 8px 25px rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(255, 213, 0, 0.3), 
+                0 0 15px rgba(213, 0, 0.3), 
                 inset 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
@@ -311,12 +311,16 @@
             width: 26px;
             height: 26px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
             vertical-align: middle;
+            /* NOWE: Robi ikonkę białą */
+            filter: invert(1) brightness(2);
         }
 
         .share-icon-btn:hover {
             transform: scale(1.15);
+            /* Lekkie podświetlenie na hoverze */
+            filter: invert(1) brightness(3);
         }
 
         .discord-corner {
@@ -339,7 +343,6 @@
 
         .discord-corner img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; }
 
-        /* NOWY STYL: Dyskretna stopka */
         .lego-footer {
             width: 100%;
             padding: 15px 10px;
