@@ -30,7 +30,7 @@
 
         #menu, #game-area { 
             padding: 40px 20px; 
-            position: relative; /* Zabezpieczenie dla pozycjonowania loga w rogu */
+            position: relative; 
         }
 
         h1.main-title {
@@ -143,6 +143,10 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             position: relative;
             border: 3px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px; /* Zabezpieczenie równej wysokości kart */
         }
 
         .card:hover { transform: translateY(-3px); border-color: var(--lego-yellow); }
@@ -166,15 +170,18 @@
 
         .main-img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
+        /* ZMIANA: Usunięto 'nowrap' i 'ellipsis' - tekst teraz widać w całości! */
         .card-name {
             color: #111;
             font-size: 11px;
             font-weight: 700;
             margin-top: 10px;
             text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal; 
+            overflow: visible;
+            text-overflow: clip;
+            text-align: center;
+            line-height: 1.2;
         }
 
         .bing-badge {
@@ -199,7 +206,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* STYL DLA LOGO DISCORDA W ROGU */
         .discord-corner {
             position: absolute;
             top: 20px;
@@ -511,8 +517,10 @@ const getFolderName = (catName) => {
             pool = db[category].map(char => ({ ...char, folder: folder }));
         }
 
-        let seed = 0;
+        // ZMIANA: Dodano Date.now() do ziarna kodu pokoju, aby postacie nie były zawsze takie same
+        let seed = Date.now();
         for (let i = 0; i < roomCode.length; i++) seed = ((seed << 5) - seed) + roomCode.charCodeAt(i);
+        
         const mulberry32 = (a) => () => {
             var t = a += 0x6D2B79F5;
             t = Math.imul(t ^ t >>> 15, t | 1);
