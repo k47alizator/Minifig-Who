@@ -33,6 +33,7 @@
             position: relative; 
         }
 
+        /* Klikalne logo jako jedyna opcja powrotu z lobby */
         h1.main-title {
             font-weight: 700;
             font-size: clamp(2.5rem, 8vw, 4rem);
@@ -41,6 +42,14 @@
             color: var(--lego-yellow);
             text-shadow: 3px 3px 0px #B45309;
             margin-bottom: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease, text-shadow 0.2s ease;
+            display: inline-block;
+        }
+
+        h1.main-title:hover {
+            transform: scale(1.03);
+            text-shadow: 3px 5px 15px rgba(255, 213, 0, 0.4), 3px 3px 0px #B45309;
         }
 
         h1.main-title span { color: var(--lego-red); text-shadow: 3px 3px 0px #900; }
@@ -226,14 +235,11 @@
 
         .card:hover { transform: translateY(-3px); border-color: var(--lego-yellow); }
 
-        /* POPRAWKA: Poświata na zewnątrz ORAZ do środka kafelka */
         .card.target-character {
             border-color: var(--lego-red) !important;
-            /* box-shadow: Cień zewnętrzny (zewnątrz), Cień wewnętrzny (do środka) */
             box-shadow: 
                 0 8px 25px rgba(227, 0, 11, 0.5), 
                 inset 0 0 15px rgba(227, 0, 11, 0.3) !important;
-            /* Gradient tła, potęgujący efekt czerwonego światła w środku */
             background: linear-gradient(135deg, white 0%, #fff0f0 100%) !important;
         }
 
@@ -292,12 +298,11 @@
         }
 
         .share-icon-btn {
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
             cursor: pointer;
             transition: transform 0.2s ease;
             vertical-align: middle;
-            margin-top: -5px;
         }
 
         .share-icon-btn:hover {
@@ -332,7 +337,7 @@
         <img src="img/Discord.png" alt="Discord">
     </div>
 
-    <h1 class="main-title">Minifig <span>Who</span></h1>
+    <h1 class="main-title" onclick="location.reload()" title="Powrót do menu">Minifig <span>Who</span></h1>
     <p class="subtitle">Zgadnij postać przeciwnika</p>
     
     <div id="setup-view">
@@ -357,11 +362,14 @@
     </div>
 
     <div id="lobby-view" style="display: none;">
-        <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; border: 2px solid var(--lego-red); display: inline-block; backdrop-filter: blur(10px); position: relative;">
-            <p style="margin: 0; color: #9CA3AF; font-weight: 600; font-size: 14px;">KOD POKOJU:</p>
+        <div style="background: var(--card-bg); padding: 12px 25px; border-radius: 15px; border: 2px solid var(--lego-red); display: inline-flex; align-items: center; gap: 20px; backdrop-filter: blur(10px); position: relative;">
             
-            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 5px 0;">
-                <h2 id="display-code" style="margin: 0; font-size: 45px; letter-spacing: 4px; color: white;">---</h2>
+            <div style="text-align: left;">
+                <p style="margin: 0; color: #9CA3AF; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">KOD POKOJU:</p>
+                <h2 id="display-code" style="margin: 0; font-size: 32px; letter-spacing: 3px; color: white; line-height: 1;">---</h2>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 12px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 15px;">
                 <img src="img/Share symbol.png" class="share-icon-btn" onclick="copyRoomLink()" title="Skopiuj link do pokoju" alt="Udostępnij">
             </div>
         </div>
