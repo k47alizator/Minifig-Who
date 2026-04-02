@@ -124,27 +124,31 @@
             text-transform: uppercase;
         }
 
-        .cat-btn:hover { background: var(--lego-blue); border-color: transparent; transform: scale(1.05); }
-
+        /* --- NOWE STYLE: LIQUID GLASS Z KOLORAMI LOGO --- */
         #category-buttons .cat-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Obwódka w kolorze LEGO Yellow z lekką przezroczystością */
+            border: 2px solid rgba(255, 213, 0, 0.4);
+            /* Poświata w kolorze LEGO Yellow */
             box-shadow: 
                 0 4px 15px rgba(0, 0, 0, 0.3),
+                0 0 10px rgba(255, 213, 0, 0.15),
                 inset 0 0 10px rgba(255, 255, 255, 0.05);
             color: white;
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Efekt najechania - zmiana poświaty i obwódki na LEGO Red */
         #category-buttons .cat-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(227, 0, 11, 0.7);
             transform: translateY(-3px) scale(1.03);
             box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.4), 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(227, 0, 11, 0.4), 
                 inset 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
@@ -517,11 +521,7 @@ const getFolderName = (catName) => {
         const container = document.getElementById('category-buttons');
         container.innerHTML = '';
         
-        const mixBtn = document.createElement('button');
-        mixBtn.className = 'cat-btn';
-        mixBtn.innerHTML = '<i class="fa-solid fa-fire"></i> Tryb Mix';
-        mixBtn.onclick = () => initGame('MIX');
-        container.appendChild(mixBtn);
+        // ZMIANA: Przycisk MIX został przeniesiony na sam dół tej funkcji
 
         Object.keys(db).forEach(cat => {
             const btn = document.createElement('button');
@@ -530,6 +530,13 @@ const getFolderName = (catName) => {
             btn.onclick = (e) => { e.stopPropagation(); initGame(cat); };
             container.appendChild(btn);
         });
+
+        // ZMIANA: Przycisk MIX tworzy się teraz PO wszystkich kategoriach
+        const mixBtn = document.createElement('button');
+        mixBtn.className = 'cat-btn';
+        mixBtn.innerHTML = '<i class="fa-solid fa-fire"></i> Tryb Mix';
+        mixBtn.onclick = () => initGame('MIX');
+        container.appendChild(mixBtn);
     }
 
     function initGame(category) {
