@@ -221,6 +221,39 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* STYLe WYBORU LICZBY KART */
+        .size-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0 35px;
+        }
+
+        .size-btn {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #9CA3AF;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .size-btn:hover {
+            border-color: rgba(255, 213, 0, 0.5);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .size-btn.active {
+            background: rgba(255, 213, 0, 0.1);
+            border-color: var(--lego-yellow);
+            color: var(--lego-yellow);
+            box-shadow: 0 0 15px rgba(255, 213, 0, 0.2);
+        }
+
         .character-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -340,6 +373,30 @@
 
         .discord-corner img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; }
 
+        /* MAŁE LOGO W GRZE */
+        .game-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--lego-yellow);
+            text-shadow: 2px 2px 0px #B45309;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.2s;
+        }
+        
+        .game-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .game-logo span {
+            color: var(--lego-red);
+            text-shadow: 2px 2px 0px #900;
+        }
+
         .lego-footer {
             width: 100%;
             padding: 15px 10px;
@@ -402,12 +459,21 @@
             </div>
         </div>
         
-        <h3 style="margin: 40px 0 20px; text-transform: uppercase; letter-spacing: 2px;">Wybierz kategorię:</h3>
+        <h3 style="margin: 30px 0 10px; text-transform: uppercase; font-size: 14px; color: #9CA3AF; letter-spacing: 1px;">Liczba kart na planszy:</h3>
+        <div class="size-selector">
+            <button class="size-btn" onclick="setBoardSize(21, this)">21 kart</button>
+            <button class="size-btn active" onclick="setBoardSize(24, this)">24 karty</button>
+            <button class="size-btn" onclick="setBoardSize(28, this)">28 kart</button>
+        </div>
+
+        <h3 style="margin: 20px 0 20px; text-transform: uppercase; letter-spacing: 2px;">Wybierz kategorię:</h3>
         <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto;"></div>
     </div>
 </div>
 
 <div id="game-area" style="display: none;">
+    <div class="game-logo" onclick="window.location.href = window.location.pathname;" title="Powrót do menu start">M<span>W</span></div>
+
     <div class="target-box">
         <p style="margin: 0; color: #9CA3AF; font-size: 12px; text-transform: uppercase;">Twoja Postać:</p>
         <h2 id="target-name" style="margin: 5px 0; color: var(--lego-yellow); font-size: 24px;">---</h2>
@@ -580,10 +646,24 @@
             {n:"Apogeum"}, {n:"Blazestone"}, {n:"Fylaks"}, {n:"Macroburst"}, {n:"Thunderhead"}, {n:"Universal Man"},
             {n:"Chudy (Toy Story)"}, {n:"Zygzak McQueen (Auta)"}, {n:"Merida Waleczna"}, {n:"Miguel (Coco)"}, {n:"Sulley (Potwory i Spółka)"}
         ]
-    };
-const getFolderName = (catName) => {
+  };
+
+    // Globalna zmienna trzymająca aktualny rozmiar planszy
+    let currentBoardSize = 24;
+
+    const getFolderName = (catName) => {
         return catName.replace('LEGO ', '').toLowerCase().trim().replace(/\s+\/\s+/g, '-').replace(/\s+/g, '-');
     };
+
+    // Funkcja do zmiany rozmiaru planszy
+    function setBoardSize(size, element) {
+        currentBoardSize = size;
+        
+        // Zmień klasę active na przyciskach
+        const buttons = document.querySelectorAll('.size-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+    }
 
     function createGame() {
         let code = "";
@@ -675,7 +755,8 @@ const getFolderName = (catName) => {
             [pool[i], pool[j]] = [pool[j], pool[i]];
         }
 
-        const selected = pool.slice(0, 24);
+        // TUTAJKORZYSTAMY Z WYBRANEJ LICZBY KART ZAMIAST SZTYWNEGO 24
+        const selected = pool.slice(0, currentBoardSize);
 
         const target = selected[Math.floor(Math.random() * selected.length)];
         document.getElementById('target-name').innerText = target.n;
