@@ -58,6 +58,7 @@
             letter-spacing: 2px;
         }
 
+        /* --- PRZYCISKI STARTOWE Z NAPISAMI --- */
         .start-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -79,6 +80,11 @@
             flex-direction: column;
             align-items: center;
         }
+        
+        .brickle-card:hover { transform: translateY(-5px); border-color: var(--lego-yellow); }
+
+        .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+        .card-desc { font-size: 0.9rem; color: #9CA3AF; margin-bottom: 15px; }
 
         .icon-box {
             width: 65px; height: 65px; border-radius: 18px;
@@ -90,7 +96,7 @@
 
         input {
             padding: 12px; font-size: 16px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1);
-            width: 80%; text-align: center; background: rgba(0,0,0,0.4); color: white; margin-top: 20px;
+            width: 80%; text-align: center; background: rgba(0,0,0,0.4); color: white; margin-top: 10px;
         }
 
         .cat-btn, .action-btn, .exit-btn {
@@ -104,37 +110,38 @@
             border: 2px solid rgba(255, 213, 0, 0.4);
             padding: 12px 20px;
             border-radius: 12px;
-            text-decoration: none;
         }
 
         .cat-btn:hover, .action-btn:hover, .exit-btn:hover {
             border-color: var(--lego-red);
             background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
         }
 
-        .cat-btn-mix {
-            border-color: var(--lego-red) !important;
-        }
-
+        /* --- WYBÓR ILOŚCI KART Z POŚWIATĄ --- */
         .size-selector { display: flex; justify-content: center; gap: 15px; margin: 15px 0 35px; }
         
         .size-btn {
-            background: rgba(255, 255, 255, 0.07);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: #9CA3AF;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--lego-yellow); /* Żółta obwódka dla wszystkich */
+            color: var(--lego-yellow);
             padding: 10px 25px;
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(255, 213, 0, 0.2); /* Delikatna żółta poświata na start */
         }
+
+        .size-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 213, 0, 0.5);
+        }
+
         .size-btn.active {
-            background: rgba(227, 0, 11, 0.3) !important;
+            background: var(--lego-red) !important;
             border-color: var(--lego-red) !important;
             color: white !important;
-            box-shadow: 0 0 15px rgba(227, 0, 11, 0.4);
+            box-shadow: 0 0 20px rgba(227, 0, 11, 0.6) !important; /* Mocna czerwona poświata dla wybranego */
         }
 
         .character-grid {
@@ -152,7 +159,7 @@
 
         .card-img-container {
             width: 100%; height: 160px; background: #f3f4f6; border-radius: 10px;
-            overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
         .main-img { max-width: 90%; max-height: 90%; object-fit: contain; }
         .card-name { color: #111; font-size: 11px; font-weight: 700; margin-top: 10px; text-transform: uppercase; }
@@ -160,7 +167,7 @@
         .target-box {
             background: var(--card-bg); padding: 10px 20px; border-radius: 20px;
             border: 3px solid var(--lego-yellow); display: inline-flex; align-items: center;
-            gap: 15px; margin-bottom: 30px; backdrop-filter: blur(10px); text-align: left;
+            gap: 15px; margin-bottom: 30px; backdrop-filter: blur(10px);
         }
         .target-img-container {
             width: 60px; height: 60px; background: white; border-radius: 12px;
@@ -168,7 +175,6 @@
         }
         .target-img-container img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
-        .share-icon-btn { width: 26px; cursor: pointer; transition: 0.2s; }
         .discord-corner {
             position: absolute; top: 20px; right: 20px; width: 50px; height: 50px;
             background: #5865F2; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -195,12 +201,15 @@
         <div class="start-grid">
             <div class="brickle-card" onclick="createGame()">
                 <div class="icon-box icon-yellow"><i class="fa-solid fa-plus"></i></div>
-                <div style="font-size: 1.4rem; font-weight: 700;">STWÓRZ GRĘ</div>
+                <div class="card-title">STWÓRZ GRĘ</div>
+                <div class="card-desc">Załóż nowy pokój i zaproś znajomego.</div>
             </div>
+
             <div class="brickle-card">
                 <div class="icon-box icon-red"><i class="fa-solid fa-right-to-bracket"></i></div>
-                <input type="text" id="room-input" placeholder="KOD" onclick="event.stopPropagation()">
-                <button class="action-btn" style="margin-top: 10px; width: 80%;" onclick="joinGame()">DOŁĄCZ</button>
+                <div class="card-title">DOŁĄCZ DO GRY</div>
+                <input type="text" id="room-input" placeholder="Wpisz kod pokoju" onclick="event.stopPropagation()">
+                <button class="action-btn" style="margin-top: 15px; width: 80%;" onclick="joinGame()">WEJDŹ DO GRY</button>
             </div>
         </div>
     </div>
@@ -208,18 +217,19 @@
     <div id="lobby-view" style="display: none;">
         <div style="background: var(--card-bg); padding: 15px; border-radius: 15px; border: 2px solid var(--lego-red); display: inline-flex; align-items: center; gap: 20px;">
             <div style="text-align: left;">
-                <p style="margin: 0; font-size: 11px;">KOD POKOJU:</p>
+                <p style="margin: 0; font-size: 11px; color: #9CA3AF;">TWÓJ KOD POKOJU:</p>
                 <h2 id="display-code" style="margin: 0; font-size: 32px; color: white;">----</h2>
             </div>
-            <img src="img/Share symbol.png" class="share-icon-btn" onclick="copyRoomLink()">
+            <img src="img/Share symbol.png" style="width:26px; cursor:pointer;" onclick="copyRoomLink()">
         </div>
         
-        <h3 style="margin-top: 30px; color: #9CA3AF; font-size: 14px;">WIELKOŚĆ PLANSZY:</h3>
+        <h3 style="margin-top: 30px; color: #9CA3AF; font-size: 14px; text-transform: uppercase;">Wielkość planszy:</h3>
         <div class="size-selector">
             <button class="size-btn" onclick="setBoardSize(21, this)">21</button>
             <button class="size-btn active" onclick="setBoardSize(28, this)">28</button>
             <button class="size-btn" onclick="setBoardSize(35, this)">35</button>
         </div>
+        
         <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 800px; margin: 0 auto;"></div>
     </div>
 </div>
@@ -228,17 +238,15 @@
     <div class="game-logo" onclick="window.location.href = window.location.pathname;">M<span>W</span></div>
 
     <div class="target-box">
-        <div class="target-img-container">
-            <img id="target-img" src="">
-        </div>
-        <div class="target-text-container">
-            <p style="margin: 0; color: #9CA3AF; font-size: 11px;">TWOJA POSTAĆ:</p>
+        <div class="target-img-container"><img id="target-img" src=""></div>
+        <div style="text-align: left;">
+            <p style="margin: 0; color: #9CA3AF; font-size: 11px; text-transform: uppercase;">Twoja Postać:</p>
             <h2 id="target-name" style="margin: 2px 0 0; color: var(--lego-yellow); font-size: 20px;">----</h2>
         </div>
     </div>
     
     <div style="margin-bottom: 20px;">
-        <button onclick="backToLobby()" class="exit-btn">POWRÓT DO KATEGORII</button>
+        <button onclick="backToLobby()" class="exit-btn">Zmień kategorię</button>
     </div>
     
     <div id="character-grid" class="character-grid"></div>
@@ -444,7 +452,6 @@ let currentBoardSize = 28;
         const container = document.getElementById('category-buttons');
         container.innerHTML = '';
         
-        // Kategorie standardowe
         Object.keys(db).forEach(cat => {
             const btn = document.createElement('button');
             btn.className = 'cat-btn';
@@ -453,9 +460,9 @@ let currentBoardSize = 28;
             container.appendChild(btn);
         });
 
-        // PRZYCISK MIX
         const mixBtn = document.createElement('button');
-        mixBtn.className = 'cat-btn cat-btn-mix';
+        mixBtn.className = 'cat-btn';
+        mixBtn.style.borderColor = 'var(--lego-red)';
         mixBtn.innerHTML = '<i class="fa-solid fa-fire"></i> TRYB MIX';
         mixBtn.onclick = () => initGame('MIX');
         container.appendChild(mixBtn);
@@ -475,7 +482,6 @@ let currentBoardSize = 28;
             pool = db[category].map(char => ({ ...char, folder: folder }));
         }
 
-        // Generator losowy (ten sam dla obu graczy na bazie kodu pokoju)
         let seed = 0;
         for (let i = 0; i < roomCode.length; i++) seed = ((seed << 5) - seed) + roomCode.charCodeAt(i);
         const rand = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
@@ -483,11 +489,9 @@ let currentBoardSize = 28;
         pool.sort(() => rand() - 0.5);
         const selected = pool.slice(0, currentBoardSize);
         
-        // TWOJA POSTAĆ (losowana lokalnie)
         const target = selected[Math.floor(Math.random() * selected.length)];
         document.getElementById('target-name').innerText = target.n;
 
-        // Zdjęcie Twojej Postaci
         const targetImg = document.getElementById('target-img');
         const exts = ['jpg', 'png', 'webp', 'jpeg'];
         let tIdx = 0;
@@ -500,19 +504,13 @@ let currentBoardSize = 28;
             else this.src = bingFallback(target.n);
         };
 
-        // Generowanie planszy
         const grid = document.getElementById('character-grid');
         grid.innerHTML = '';
         selected.forEach(char => {
             const card = document.createElement('div');
             card.className = 'card';
             let cIdx = 0;
-            card.innerHTML = `
-                <div class="card-img-container">
-                    <img class="main-img" src="${getUrl(char.n, char.folder, exts[0])}">
-                </div>
-                <div class="card-name">${char.n}</div>
-            `;
+            card.innerHTML = `<div class="card-img-container"><img class="main-img" src="${getUrl(char.n, char.folder, exts[0])}"></div><div class="card-name">${char.n}</div>`;
             const img = card.querySelector('.main-img');
             img.onerror = function() {
                 if (++cIdx < exts.length) this.src = getUrl(char.n, char.folder, exts[cIdx]);
@@ -527,7 +525,7 @@ let currentBoardSize = 28;
     }
 
     function copyRoomLink() {
-        navigator.clipboard.writeText(window.location.href).then(() => alert("Skopiowano link!"));
+        navigator.clipboard.writeText(window.location.href).then(() => alert("Skopiowano link do gry!"));
     }
 
     window.onload = function() {
