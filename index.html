@@ -12,13 +12,13 @@
         :root {
             --lego-yellow: #FFD500;
             --lego-red: #E3000B;
-            --glass-white: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
         }
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('img/tlo.jpg');
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('img/tlo.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -40,24 +40,11 @@
         }
         h1.main-title span { color: var(--lego-red); text-shadow: 3px 3px 0px #900; }
 
-        .subtitle { color: #9CA3AF; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
-
-        /* --- STYL LIQUID GLASS --- */
-        .glass-panel {
-            background: var(--glass-white);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-top: 1px solid rgba(255,255,255,0.4);
-            border-left: 1px solid rgba(255,255,255,0.4);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border-radius: 24px;
-            transition: 0.3s all ease;
-        }
-
-        /* --- PRZYCISKI LIQUID GLASS --- */
+        /* --- STYL LIQUID GLASS (PRZYCISKI) --- */
         .liquid-btn {
-            background: rgba(255, 213, 0, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--lego-yellow);
             color: var(--lego-yellow);
             padding: 12px 24px;
@@ -66,36 +53,38 @@
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 10px rgba(255, 213, 0, 0.1), 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(255, 213, 0, 0.2);
         }
-
-        /* Poświata dla żółtych przycisków */
-        .liquid-btn { box-shadow: 0 0 15px rgba(255, 213, 0, 0.3); }
 
         .liquid-btn:hover, .liquid-btn.active {
             background: var(--lego-red);
             border-color: var(--lego-red);
             color: white;
+            box-shadow: 0 0 20px rgba(227, 0, 11, 0.6);
             transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(227, 0, 11, 0.6);
         }
 
-        /* Mix Button - odwrócony */
+        /* Mix Button - Styl Odwrócony */
         .mix-btn {
             border-color: var(--lego-red);
             color: var(--lego-red);
-            box-shadow: 0 0 15px rgba(227, 0, 11, 0.3);
         }
         .mix-btn:hover {
             background: var(--lego-yellow);
             border-color: var(--lego-yellow);
             color: #000;
-            box-shadow: 0 0 25px rgba(255, 213, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 213, 0, 0.6);
         }
 
-        /* --- START GRID SPÓJNOŚĆ --- */
+        /* --- PANEL STARTOWY --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
         .start-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -106,57 +95,60 @@
 
         .brickle-card {
             padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            transition: 0.3s;
+            cursor: pointer;
         }
-        .brickle-card:hover { border-color: var(--lego-yellow); }
-
-        .icon-box {
-            width: 70px; height: 70px; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; margin-bottom: 25px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        .brickle-card:hover { border-color: var(--lego-yellow); transform: translateY(-5px); }
 
         input {
-            padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid var(--glass-border);
-            width: 85%; text-align: center; background: rgba(0,0,0,0.3); color: white; margin-top: 15px;
+            padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+            width: 80%; text-align: center; background: rgba(0,0,0,0.4); color: white; margin-top: 15px;
             font-family: 'Fredoka', sans-serif;
         }
 
-        /* --- TWOJA POSTAĆ --- */
+        /* --- TWOJA POSTAĆ (ZDJĘCIE OBOZ NAZWY) --- */
         .target-box {
-            padding: 12px 25px;
             display: inline-flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 35px;
+            padding: 15px 30px;
+            margin-bottom: 30px;
+            text-align: left;
         }
         .target-img-container {
-            width: 75px; height: 75px; background: white; border-radius: 15px;
+            width: 80px; height: 80px;
+            background: white;
+            border-radius: 15px;
             display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--lego-yellow); overflow: hidden;
-            box-shadow: 0 0 15px rgba(255, 213, 0, 0.3);
+            border: 3px solid var(--lego-yellow);
+            box-shadow: 0 0 15px rgba(255, 213, 0, 0.4);
         }
         .target-img-container img { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .target-name-text { color: var(--lego-yellow); font-size: 28px; font-weight: 700; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-
-        /* --- KARTY --- */
-        .card {
-            background: white; border-radius: 18px; padding: 12px; cursor: pointer;
-            transition: 0.2s; border: 3px solid transparent;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        .target-name-text { 
+            color: var(--lego-yellow); 
+            font-size: 30px; 
+            font-weight: 700; 
+            margin: 0; 
+            text-transform: uppercase;
         }
-        .card:hover { border-color: var(--lego-yellow); transform: translateY(-3px); }
-        .card.eliminated { opacity: 0.1; filter: grayscale(100%) blur(1px); transform: scale(0.9); }
-        .card-img-container { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; }
-        .main-img { max-width: 95%; max-height: 95%; object-fit: contain; }
-        .card-name { color: #111; font-size: 11px; font-weight: 700; margin-top: 12px; text-transform: uppercase; }
 
-        .discord-corner { position: absolute; top: 20px; right: 20px; width: 45px; cursor: pointer; transition: 0.3s; }
-        .discord-corner:hover { transform: scale(1.1) rotate(5deg); }
+        /* --- KARTY NA PLANSZY --- */
+        .character-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; max-width: 1200px; margin: 20px auto;
+        }
+        .card {
+            background: white; border-radius: 18px; padding: 10px; cursor: pointer;
+            transition: 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border: 3px solid transparent;
+        }
+        .card:hover { border-color: var(--lego-yellow); }
+        .card.eliminated { opacity: 0.1; filter: grayscale(100%); transform: scale(0.9); }
+        .card-img-container { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; }
+        .main-img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        .card-name { color: #111; font-size: 11px; font-weight: 700; margin-top: 10px; text-transform: uppercase; }
+
+        .discord-corner { position: absolute; top: 20px; right: 20px; width: 45px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -164,18 +156,16 @@
 <div id="menu">
     <img src="img/Discord.png" class="discord-corner" onclick="window.open('https://discord.gg/FeBT9tVEsY')">
     <h1 class="main-title" onclick="location.href=location.pathname">Minifig <span>Who</span></h1>
-    <p class="subtitle">Zgadnij postać przeciwnika</p>
     
     <div id="setup-view">
         <div class="start-grid">
             <div class="glass-panel brickle-card" onclick="createGame()">
-                <div class="icon-box" style="color: var(--lego-yellow);"><i class="fa-solid fa-plus"></i></div>
+                <i class="fa-solid fa-plus" style="font-size: 40px; color: var(--lego-yellow); margin-bottom: 20px;"></i>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--lego-yellow);">STWÓRZ GRĘ</div>
-                <p style="color: #9CA3AF; font-size: 0.9rem;">Wygeneruj kod i zaproś znajomego</p>
             </div>
             <div class="glass-panel brickle-card">
-                <div class="icon-box" style="color: var(--lego-red);"><i class="fa-solid fa-right-to-bracket"></i></div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: white;">DOŁĄCZ</div>
+                <i class="fa-solid fa-right-to-bracket" style="font-size: 40px; color: var(--lego-red); margin-bottom: 20px;"></i>
+                <div style="font-size: 1.5rem; font-weight: 700;">DOŁĄCZ</div>
                 <input type="text" id="room-input" placeholder="Wpisz kod pokoju">
                 <button class="liquid-btn" style="margin-top: 20px; width: 85%;" onclick="joinGame()">WEJDŹ</button>
             </div>
@@ -183,22 +173,22 @@
     </div>
 
     <div id="lobby-view" style="display: none;">
-        <div class="glass-panel" style="padding: 15px 35px; display: inline-flex; align-items: center; gap: 25px; border-color: var(--lego-red);">
+        <div class="glass-panel" style="padding: 15px 30px; display: inline-flex; align-items: center; gap: 20px; border-color: var(--lego-red);">
             <div style="text-align: left;">
-                <p style="margin: 0; font-size: 10px; color: #9CA3AF; letter-spacing: 1px;">TWÓJ KOD POKOJU</p>
-                <h2 id="display-code" style="margin: 0; font-size: 36px; color: white; letter-spacing: 2px;">----</h2>
+                <p style="margin: 0; font-size: 10px; color: #9CA3AF;">KOD POKOJU</p>
+                <h2 id="display-code" style="margin: 0; font-size: 32px;">----</h2>
             </div>
-            <img src="img/Share symbol.png" style="width:28px; cursor:pointer" onclick="copyRoomLink()">
+            <img src="img/Share symbol.png" style="width:26px; cursor:pointer" onclick="copyRoomLink()">
         </div>
         
-        <h3 style="margin-top: 40px; font-size: 14px; color: #9CA3AF; letter-spacing: 1px;">WYBIERZ ROZMIAR PLANSZY</h3>
-        <div class="size-selector">
+        <h3 style="margin-top: 35px; color: #9CA3AF; font-size: 14px;">WIELKOŚĆ PLANSZY:</h3>
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px;">
             <button class="liquid-btn size-btn" onclick="setBoardSize(21, this)">21</button>
             <button class="liquid-btn size-btn active" onclick="setBoardSize(28, this)">28</button>
             <button class="liquid-btn size-btn" onclick="setBoardSize(35, this)">35</button>
         </div>
         
-        <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 900px; margin: 0 auto;"></div>
+        <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;"></div>
     </div>
 </div>
 
@@ -206,19 +196,20 @@
     <div class="glass-panel target-box">
         <div class="target-img-container"><img id="target-img" src=""></div>
         <div>
-            <p style="margin: 0; color: #9CA3AF; font-size: 10px; text-transform: uppercase;">Twoja Postać:</p>
+            <p style="margin: 0; color: #9CA3AF; font-size: 10px;">TWOJA POSTAĆ:</p>
             <h2 id="target-name" class="target-name-text">----</h2>
         </div>
     </div>
+    
     <div style="margin-bottom: 25px;">
         <button onclick="backToLobby()" class="liquid-btn" style="border-radius: 30px;">Zmień kategorię</button>
     </div>
-    <div id="character-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; max-width: 1200px; margin: 0 auto;"></div>
+    
+    <div id="character-grid" class="character-grid"></div>
 </div>
 
 <script>
     const githubConfig = { user: "k47alizator", repo: "Minifig-Who", folder: "img" };
-    
     const db = {
         "LEGO STAR WARS": [
             {n:"Luke Skywalker (z Tatooine)"}, {n:"Luke Skywalker (Pilot X-Wing)"}, {n:"Luke Skywalker (z Bespin)"}, {n:"Luke Skywalker (z Dagobah)"}, {n:"Luke Skywalker (Rycerz Jedi)"}, {n:"Luke Skywalker (z Endor)"}, {n:"Luke Skywalker (Szturmowiec)"}, {n:"Luke Skywalker (z Hoth)"}, {n:"Luke Skywalker (Ceremonia)"}, {n:"Luke Skywalker (Stary Luke)"}, {n:"Luke Skywalker (z Crait)"}, {n:"Luke Skywalker (Zbiornik Bacta)"}, {n:"Luke Skywalker (Pilot Śmigacza)"},
