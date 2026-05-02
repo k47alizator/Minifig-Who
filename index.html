@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --lego-yellow: #FFD500;
@@ -298,41 +301,41 @@
             transform: scale(0.92);
         }
 
-.card-img-container {
-    width: 100%;
-    height: 180px;
-    background: transparent;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
+        .card-img-container {
+            width: 100%;
+            height: 180px;
+            background: transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-.main-img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: contain; 
-    transition: transform 0.3s ease;
-}
+        .main-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            transition: transform 0.3s ease;
+        }
 
-.card:hover .main-img {
-    transform: scale(1.08);
-}
+        .card:hover .main-img {
+            transform: scale(1.08);
+        }
 
-       .card-name {
-    color: #111;
-    font-size: 13px;
-    font-weight: 700;
-    margin-top: 10px; 
-    text-transform: uppercase;
-    white-space: normal; 
-    overflow: visible;
-    text-align: center;
-    line-height: 1.2;
-    padding: 0 5px;
-}
+        .card-name {
+            color: #111;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 10px; 
+            text-transform: uppercase;
+            white-space: normal; 
+            overflow: visible;
+            text-align: center;
+            line-height: 1.2;
+            padding: 0 5px;
+        }
 
         .bing-badge {
             position: absolute;
@@ -373,26 +376,26 @@
             }
         }
         
-.target-img-frame {
-    width: 100px;
-    height: 100px;
-    background: white;
-    border: 3px solid var(--lego-red);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 0 15px rgba(227, 0, 11, 0.3);
-}
+        .target-img-frame {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 3px solid var(--lego-red);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(227, 0, 11, 0.3);
+        }
 
-.target-img-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; 
-    padding: 5px; 
-}
+        .target-img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            padding: 5px; 
+        }
 
         .share-icon-btn {
             width: 26px;
@@ -465,6 +468,136 @@
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.4;
+        }
+
+        #chat-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        #chat-panel {
+            display: none;
+            width: 320px;
+            height: 400px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        #chat-header {
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            border-bottom: 2px solid var(--lego-blue);
+            color: white;
+        }
+
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-msg {
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            max-width: 85%;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .chat-msg.my-msg {
+            background: rgba(0, 108, 183, 0.6);
+            border: 1px solid var(--lego-blue);
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+            color: white;
+        }
+
+        .chat-msg.other-msg {
+            background: rgba(227, 0, 11, 0.6);
+            border: 1px solid var(--lego-red);
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            color: white;
+        }
+
+        #chat-input-area {
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #chat-input-area input {
+            margin: 0;
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 10px;
+        }
+
+        #chat-toggle-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: var(--lego-blue);
+            color: white;
+            border: 3px solid rgba(255,255,255,0.2);
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #chat-toggle-btn:hover {
+            transform: scale(1.1);
+            background: #0080d6;
+            border-color: var(--lego-yellow);
+        }
+
+        #chat-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--lego-red);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: bold;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: 2px solid white;
+        }
+
+        @media (max-width: 600px) {
+            #chat-panel { width: calc(100vw - 50px); height: 50vh; }
         }
     </style>
 </head>
@@ -545,17 +678,47 @@
     <div id="character-grid" class="character-grid"></div>
 </div>
 
+<div id="chat-widget">
+    <div id="chat-panel">
+        <div id="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Czat</span>
+            <i class="fa-solid fa-xmark" onclick="toggleChat()" style="cursor: pointer; font-size: 20px;"></i>
+        </div>
+        <div id="chat-messages"></div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Zadaj pytanie..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button class="action-btn" onclick="sendChatMessage()" style="width: auto; padding: 0 15px;"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button id="chat-toggle-btn" onclick="toggleChat()">
+        <i class="fa-solid fa-message"></i>
+        <span id="chat-badge">1</span>
+    </button>
+</div>
+
 <div class="lego-footer">
     <p>Niniejsza strona jest projektem fanowskim o charakterze niekomercyjnym. Gra nie jest w żaden sposób powiązana, wspierana ani sponsorowana przez Grupę LEGO. Wszelkie znaki towarowe, nazwy oraz wizerunki postaci należą do ich prawowitych właścicieli.</p>
 </div>
 
 <script>
-    const githubConfig = {
-        user: "k47alizator",
-        repo: "Minifig-Who",
-        folder: "img"
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFb-VqoY9MXzMB3X3igmMgSXQh3_2NXR0",
+      authDomain: "minifig-who-test.firebaseapp.com",
+      databaseURL: "https://minifig-who-test-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "minifig-who-test",
+      storageBucket: "minifig-who-test.firebasestorage.app",
+      messagingSenderId: "315026622753",
+      appId: "1:315026622753:web:952f2a67e9360d3f0d1660"
     };
 
+    firebase.initializeApp(firebaseConfig);
+    const fireDb = firebase.database();
+
+    const githubConfig = {
+        user: "k47alizator",
+        repo: "Minifig-Who-Test",
+        folder: "img"
+    };
     const db = {
         "LEGO STAR WARS": [
             {n:"Luke Skywalker (z Tatooine)"}, {n:"Luke Skywalker (Pilot X-Wing)"}, {n:"Luke Skywalker (z Bespin)"}, {n:"Luke Skywalker (z Dagobah)"}, {n:"Luke Skywalker (Rycerz Jedi)"}, {n:"Luke Skywalker (z Endor)"}, {n:"Luke Skywalker (Szturmowiec)"}, {n:"Luke Skywalker (z Hoth)"}, {n:"Luke Skywalker (Ceremonia)"}, {n:"Luke Skywalker (Stary Luke)"}, {n:"Luke Skywalker (z Crait)"}, {n:"Luke Skywalker (Zbiornik Bacta)"}, {n:"Luke Skywalker (Pilot Śmigacza)"},
@@ -707,6 +870,68 @@
         ]
   };
   let currentBoardSize = 28;
+    let currentRoomCode = null;
+    
+    const myPlayerId = Math.random().toString(36).substring(2, 10);
+    let isChatOpen = false;
+    let unreadMessages = 0;
+
+    function toggleChat() {
+        const panel = document.getElementById('chat-panel');
+        const badge = document.getElementById('chat-badge');
+        isChatOpen = !isChatOpen;
+        
+        if(isChatOpen) {
+            panel.style.display = 'flex';
+            badge.style.display = 'none';
+            unreadMessages = 0;
+            const chatBox = document.getElementById('chat-messages');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } else {
+            panel.style.display = 'none';
+        }
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (text && currentRoomCode) {
+            fireDb.ref('rooms/' + currentRoomCode + '/chat').push({
+                text: text,
+                sender: myPlayerId,
+                timestamp: Date.now()
+            });
+            input.value = '';
+        }
+    }
+
+    function listenToChat(code) {
+        const chatBox = document.getElementById('chat-messages');
+        chatBox.innerHTML = '';
+        
+        fireDb.ref('rooms/' + code + '/chat').off();
+        
+        fireDb.ref('rooms/' + code + '/chat').on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            const msgDiv = document.createElement('div');
+            
+            if(data.sender === myPlayerId) {
+                msgDiv.className = 'chat-msg my-msg';
+            } else {
+                msgDiv.className = 'chat-msg other-msg';
+                if(!isChatOpen) {
+                    unreadMessages++;
+                    const badge = document.getElementById('chat-badge');
+                    badge.innerText = unreadMessages > 9 ? '9+' : unreadMessages;
+                    badge.style.display = 'flex';
+                }
+            }
+            
+            msgDiv.innerText = data.text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    }
 
     const getFolderName = (catName) => {
         return catName.replace('LEGO ', '').toLowerCase().trim().replace(/\s+\/\s+/g, '-').replace(/\s+/g, '-');
@@ -714,7 +939,6 @@
 
     function setBoardSize(size, element) {
         currentBoardSize = size;
-        
         const buttons = document.querySelectorAll('.size-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         element.classList.add('active');
@@ -750,10 +974,14 @@
     }
 
     function enterLobby(code) {
+        currentRoomCode = code;
         document.getElementById('setup-view').style.display = 'none';
         document.getElementById('lobby-view').style.display = 'block';
         document.getElementById('display-code').innerText = code;
         generateCategoryButtons();
+        
+        document.getElementById('chat-widget').style.display = 'flex';
+        listenToChat(code);
     }
 
     function backToLobby() {
