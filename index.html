@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minifig Who - Online 1.0.1</title>
+    <title>Minifig Who - Online 1.0.2</title>
 
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -150,8 +150,7 @@
             padding: 12px 20px; border-radius: 10px; font-weight: 800; font-size: 14px;
             cursor: pointer; transition: all 0.3s; font-family: 'Fredoka', sans-serif; text-transform: uppercase;
         }
-        .guess-btn:hover { background: var(--lego-red); color: white; box-shadow: 0 0 20px rgba(227, 0, 11, 0.5); transform: scale(1.02); }
-        .guess-btn.active { 
+            .guess-btn:hover:not(:disabled) { background: var(--lego-red); color: white; box-shadow: 0 0 20px rgba(227, 0, 11, 0.5); transform: scale(1.02); }        .guess-btn.active { 
             background: var(--lego-yellow); color: black; border-color: var(--lego-yellow); 
             box-shadow: 0 0 20px rgba(255, 213, 0, 0.5); animation: pulse 1.5s infinite; 
         }
@@ -237,6 +236,16 @@
         }
         #modal-text { font-size: 1.2rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
         #modal-buttons { display: flex; justify-content: center; gap: 15px; }
+        .guess-btn:disabled {
+            opacity: 0.4; cursor: not-allowed; border-color: #4b5563; color: #9ca3af;
+        }
+
+        .end-turn-btn {
+            background: rgba(255,255,255,0.05); color: white; border: 2px solid var(--lego-yellow);
+            padding: 12px 20px; border-radius: 10px; font-weight: 800; font-size: 14px;
+            cursor: pointer; transition: all 0.3s; font-family: 'Fredoka', sans-serif; text-transform: uppercase;
+        }
+        .end-turn-btn:hover { background: var(--lego-yellow); box-shadow: 0 0 20px rgba(0, 108, 183, 0.5); transform: scale(1.02); }
     </style>
 </head>
     <body>
@@ -287,22 +296,23 @@
 
 <div id="game-area" style="display: none; padding: 20px; flex: 1;">
     <div style="text-align: center; margin-bottom: 20px;">
-        <h1 class="main-title" onclick="location.reload()" style="font-size: 2rem; margin: 0;">MW</h1>
+        <h1 class="main-title" onclick="location.reload()" style="font-size: 2rem; margin: 0;"><span style="color: var(--lego-yellow) !important;">M</span><span style="color: var(--lego-red) !important;">W</span></h1>
     </div>
 
-    <div class="target-box">
-        <div style="text-align: left; flex: 1;">
+<div class="target-box" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1050px; margin: 0 auto 30px auto; gap: 30px; padding: 25px 35px; box-sizing: border-box;">
+        <div style="flex: 1; text-align: left; min-width: 0;">
             <p style="margin: 0; color: #aaa; font-size: 12px; font-weight: 700; letter-spacing: 1px;">TWOJA POSTAĆ:</p>
-            <h2 id="target-name" style="margin: 5px 0 0 0; color: var(--lego-yellow); font-size: 32px; font-weight: 800; text-transform: uppercase;">---</h2>
+            <h2 id="target-name" style="margin: 5px 0 0 0; color: var(--lego-yellow); font-size: 30px; font-weight: 800; text-transform: uppercase; line-height: 1.2; word-wrap: break-word;">---</h2>
         </div>
         
-        <div class="target-img-frame">
+        <div class="target-img-frame" style="width: 170px; height: 170px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; margin: 0 auto; background: white; border: 4px solid var(--lego-red); border-radius: 25px; overflow: hidden; padding: 5px; box-sizing: border-box;">
             <img id="target-img" src="" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
 
-        <div class="game-actions" style="flex: 1; align-items: flex-end;">
-            <button onclick="backToLobby()" class="nav-btn">POWRÓT DO KATEGORII</button>
-            <button id="guess-btn-main" onclick="toggleGuessMode()" class="guess-btn">ZGADUJ</button>
+        <div class="game-actions" style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 240px;">
+            <button onclick="backToLobby()" class="guess-btn" style="width: 100%; max-width: 240px;">POWRÓT DO KATEGORII</button>
+            <button id="guess-btn-main" onclick="toggleGuessMode()" class="guess-btn" style="width: 100%; max-width: 240px;">ZGADUJ</button>
+            <button id="end-turn-btn" onclick="passTurn()" class="guess-btn" style="display: none; width: 100%; max-width: 240px;">KONIEC TURY</button>
         </div>
     </div>
     <div id="character-grid" class="character-grid"></div>
@@ -314,7 +324,7 @@
         <div id="chat-messages"></div>
         <div id="chat-input-area">
             <input type="text" id="chat-input" placeholder="Napisz wiadomość..." onkeypress="if(event.key==='Enter') sendChatMessage()" style="margin: 0; padding: 10px; width: 100%; border-radius: 8px;">
-            <button class="action-btn" onclick="sendChatMessage()" style="margin: 0; padding: 10px 15px; border-radius: 8px; border-color: var(--lego-blue); background: var(--lego-blue);"><i class="fa-solid fa-paper-plane"></i></button>
+            <button class="action-btn" onclick="sendChatMessage()" style="margin: 0; padding: 10px 15px; border-radius: 8px; border-color: var(--lego-yellow); background: var(--lego-yellow);"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
     <button id="chat-toggle-btn" onclick="toggleChat()">
@@ -333,7 +343,7 @@
         <div id="modal-buttons"></div>
     </div>
 </div>
-       <script>
+        <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBPG1-ryZUgn0is4B5cZ4Hgnp1SJKFAlEg",
       authDomain: "minifig-who.firebaseapp.com",
@@ -510,6 +520,8 @@
     const myPlayerId = Math.random().toString(36).substring(2, 10);
     let isChatOpen = false;
     let unreadMessages = 0;
+    let currentBoardCharacters = [];
+    let gameStarted = false; 
 
     function showModal(msg, type = 'alert', onConfirm = null) {
         const modal = document.getElementById('custom-modal');
@@ -639,13 +651,72 @@
     }
 });
 
-        fireDb.ref('rooms/' + code + '/victory').on('value', (s) => {
+       fireDb.ref('rooms/' + code + '/victory').on('value', (s) => {
             const d = s.val();
             if(d) {
                 const isMe = d.winner === myPlayerId;
                
                 const opponentChar = isMe ? d.loserCharacter : d.winnerCharacter;
                 showWinOverlay(isMe, opponentChar);
+            }
+        });
+
+        fireDb.ref('rooms/' + code + '/targets').on('value', async (s) => {
+            const targets = s.val() || {};
+            const myTargetName = targets[myPlayerId];
+            
+            if (myTargetName) {
+                const charObj = currentBoardCharacters.find(c => c.n === myTargetName);
+                if (charObj) {
+                    document.getElementById('target-name').innerText = charObj.n;
+                    const targetImg = document.getElementById('target-img');
+                    targetImg.src = `https://raw.githubusercontent.com/${githubConfig.user}/${githubConfig.repo}/main/img/${charObj.folder}/${encodeURIComponent(charObj.n)}.webp`;
+                    targetImg.onerror = () => { targetImg.src = `https://tse2.mm.bing.net/th?q=lego+${encodeURIComponent(charObj.n)}+minifigure`; };
+                }
+            } else {
+                document.getElementById('target-name').innerText = "WYBIERZ POSTAĆ!";
+                document.getElementById('target-img').src = "https://placehold.co/170x170/ffffff/dd0000?text=?";
+            }
+
+            const playersSnap = await fireDb.ref('rooms/' + currentRoomCode + '/players').once('value');
+            const pIds = Object.keys(playersSnap.val() || {}).sort();
+            
+            if (pIds.length === 2 && targets[pIds[0]] && targets[pIds[1]]) {
+                gameStarted = true; 
+                
+                const turnSnap = await fireDb.ref('rooms/' + currentRoomCode + '/turn').once('value');
+                if (!turnSnap.exists() || !turnSnap.val()) {
+                    if (pIds[0] === myPlayerId) {
+                        const randomTurnOwner = pIds[Math.floor(Math.random() * 2)];
+                        fireDb.ref('rooms/' + currentRoomCode + '/turn').set(randomTurnOwner);
+                    }
+                }
+            } else {
+                gameStarted = false;
+                const guessBtn = document.getElementById('guess-btn-main');
+                const endTurnBtn = document.getElementById('end-turn-btn');
+                if (guessBtn) guessBtn.disabled = true;
+                if (endTurnBtn) endTurnBtn.style.display = 'none';
+            }
+        });
+
+        fireDb.ref('rooms/' + code + '/turn').on('value', (s) => {
+            const currentTurnId = s.val();
+            const guessBtn = document.getElementById('guess-btn-main');
+            const endTurnBtn = document.getElementById('end-turn-btn');
+
+            if (!gameStarted || !currentTurnId) {
+                if (guessBtn) guessBtn.disabled = true;
+                if (endTurnBtn) endTurnBtn.style.display = 'none';
+                return;
+            }
+            
+            const isMyTurn = currentTurnId === myPlayerId;
+            if (guessBtn) guessBtn.disabled = !isMyTurn;
+            if (endTurnBtn) endTurnBtn.style.display = isMyTurn ? 'block' : 'none';
+            
+            if (!isMyTurn && isGuessMode) {
+                toggleGuessMode();
             }
         });
     }
@@ -678,7 +749,7 @@
         }
     }
 
-    function initGame(category) {
+  async function initGame(category) {
         const getFolderName = (n) => n.replace('LEGO ', '').toLowerCase().trim().replace(/\s+/g, '-');
         let pool = [];
         Object.keys(db).forEach(cat => {
@@ -697,35 +768,43 @@
         }
 
         const selected = pool.slice(0, currentBoardSize);
-        
-        const mySeed = currentRoomCode + myPlayerId;
-        let tSeed = 0;
-        for (let i = 0; i < mySeed.length; i++) tSeed += mySeed.charCodeAt(i);
-        const myTarget = selected[Math.floor(((tSeed * 9301 + 49297) % 233280) / 233280 * selected.length)];
+        currentBoardCharacters = selected;
+        gameStarted = false;               
 
-        fireDb.ref('rooms/' + currentRoomCode + '/targets/' + myPlayerId).set(myTarget.n);
-
-        document.getElementById('target-name').innerText = myTarget.n;
-        const targetImg = document.getElementById('target-img');
-        targetImg.src = `https://raw.githubusercontent.com/${githubConfig.user}/${githubConfig.repo}/main/img/${myTarget.folder}/${encodeURIComponent(myTarget.n)}.webp`;
-        targetImg.onerror = () => { targetImg.src = `https://tse2.mm.bing.net/th?q=lego+${encodeURIComponent(myTarget.n)}+minifigure`; };
+        document.getElementById('target-name').innerText = "WYBIERZ POSTAĆ!";
+        document.getElementById('target-img').src = "https://placehold.co/170x170/ffffff/dd0000?text=?";
 
         const grid = document.getElementById('character-grid');
         grid.innerHTML = '';
         selected.forEach(char => {
             const card = document.createElement('div');
-            card.className = char.n === myTarget.n ? 'card target-character' : 'card';
+            card.className = 'card';
             card.innerHTML = `
                 <div class="card-img-container"><img class="main-img" src="https://raw.githubusercontent.com/${githubConfig.user}/${githubConfig.repo}/main/img/${char.folder}/${encodeURIComponent(char.n)}.webp" onerror="this.src='https://tse2.mm.bing.net/th?q=lego+${encodeURIComponent(char.n)}+minifigure'"></div>
                 <div class="card-name">${char.n}</div>
             `;
-            card.onclick = () => isGuessMode ? confirmGuess(char.n) : card.classList.toggle('eliminated');
+            
+            card.onclick = () => {
+                if (!gameStarted) {
+                    fireDb.ref('rooms/' + currentRoomCode + '/targets/' + myPlayerId).set(char.n);
+                } else {
+                    isGuessMode ? confirmGuess(char.n) : card.classList.toggle('eliminated');
+                }
+            };
+            
             grid.appendChild(card);
         });
 
         isGuessMode = false;
-        document.getElementById('guess-btn-main').innerText = "ZGADUJ";
-        document.getElementById('guess-btn-main').classList.remove('active');
+        const mainGuessBtn = document.getElementById('guess-btn-main');
+        if (mainGuessBtn) {
+            mainGuessBtn.innerText = "ZGADUJ";
+            mainGuessBtn.classList.remove('active');
+            mainGuessBtn.disabled = true;
+        }
+
+        const endTurnBtn = document.getElementById('end-turn-btn');
+        if (endTurnBtn) endTurnBtn.style.display = 'none';
 
         document.getElementById('menu').style.display = 'none';
         document.getElementById('game-area').style.display = 'flex';
@@ -745,8 +824,9 @@
                     loserCharacter: targets[opponentId]
                 });
             } else {
-                showModal("Pudło! To nie jest ta postać.", "alert");
+                showModal("Pudło! To nie jest ta postać. Koniec Twojej tury.", "alert");
                 toggleGuessMode();
+                passTurn();
             }
         });
     }
@@ -779,7 +859,7 @@
         });
     }
 
- function backToLobby() {
+function backToLobby() {
         if (!currentRoomCode) return;
 
         fireDb.ref('rooms/' + currentRoomCode + '/settings').update({ 
@@ -787,6 +867,8 @@
         });
 
         fireDb.ref('rooms/' + currentRoomCode + '/victory').remove();
+        fireDb.ref('rooms/' + currentRoomCode + '/targets').remove();
+        fireDb.ref('rooms/' + currentRoomCode + '/turn').remove();
         
         switchViewToLobby();
     }
@@ -807,6 +889,16 @@
 
         const winOverlay = document.querySelector('.win-overlay');
         if(winOverlay) winOverlay.remove();
+    }
+
+    async function passTurn() {
+        if (!currentRoomCode) return;
+        const snap = await fireDb.ref('rooms/' + currentRoomCode + '/players').once('value');
+        const players = snap.val() || {};
+        const opponentId = Object.keys(players).find(id => id !== myPlayerId);
+        if (opponentId) {
+            fireDb.ref('rooms/' + currentRoomCode + '/turn').set(opponentId);
+        }
     }
 
     window.onload = () => {
